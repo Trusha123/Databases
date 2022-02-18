@@ -1,0 +1,74 @@
+sudo su -l postgres
+
+psql
+
+\h:for commands help
+
+create table product(
+id integer primary key, --product identifier
+name varchar(30) not null, --name
+brand varchar(30) not null, --ntand of product
+price numeric(20,2)
+);
+
+\dt for list of tables in db
+
+\d product: to display schema structure of table
+
+insert into product (id,name,brand,price) values (3001, 'Refrigerator', 'LG', 35000.00);
+insert into product values(3002, 'Washing Machine','Samsung', 28000.00);
+insert into product values(3003, 'AC','Whirpool', 35000.00);
+insert into product values(3004, 'Mobile','Samsung', 25000.00);
+insert into product values(3005, 'Laptop','Lenovo', 67000.00);
+insert into product values(3006, 'Printer','HP', 39000.00);
+insert into product values(3007, 'Refrigerator','Whirpool', 36000.00);
+insert into product values(3008, 'TV','Samsung', 23000.00);
+
+select * from product;
+select * from product where price>30000.00;
+select * from product where price between 30000.00 and 40000.00;
+select * from product where price not between 30000.00 and 40000.00;
+
+
+insert into product (id,name,price) values (3009, 'AC', 37000.00);
+
+
+select * from product limit 3;
+
+//how many no of records want to be skipped
+select * from product limit 3 offset 2;
+
+update product set price=price+1000.00 where brand like 'S%';
+
+//update with returning no of rows updated lastly
+update product set price=price+1000.00 where brand like 'S%' returning *;
+
+delete from product where price<3000.00;
+delete from product where price<3000.00 returning *;
+
+
+insert into
+product values
+(3121,'Mobile','Samsung',32000.00),
+(3100,'Laptop','HP',45000.00),
+(3101,'Mobile','Vivo',128000),
+(3102,'Laptop','Lenovo',67000.00);
+
+update product set price = price+2000.00
+where name like 'S%';
+
+
+
+\i '/home/sterlite/prosql.sql'
+
+copy product(id,name,brand,price)
+from '/home/sterlite/product_db.csv'
+delimiter ','
+csv header;
+
+chmod +rwx product.csv
+
+
+
+
+

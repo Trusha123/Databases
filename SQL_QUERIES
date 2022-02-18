@@ -1,0 +1,179 @@
+ALTER USER hr IDENTIFIED BY hr ACCOUNT UNLOCK;
+select first_name,salary ,salary*12 'Annual Salary' from employees; 
+select first_name ||''|| last_name as "Full Name" from employees;
+select first_name || 'is a' || job_id as "Employee and it's Job" from employees;
+
+select department_name || q'[Department's Manager Id:]'
+|| manager_id as "Department and Manager" from departments;
+
+select department_name || q'$Department's Manager Id:$'
+|| manager_id as "Department and Manager" from departments;
+
+select department_name || q'!Department's Manager Id:!'
+|| manager_id as "Department and Manager" from departments;
+
+select distinct job_id from employees;
+
+select employee_id,last_name,department_id from employees where department_id = 10;
+select employee_id,last_name,department_id from employees where department_id = 20;
+
+select employee_id,last_name from employees where job_id = 'SH_CLERK';
+select employee_id,last_name from employees where hire_date = '07-JUN-02';
+
+select employee_id,first_name,salary from employees where salary>=5000;
+select employee_id,first_name,salary from employees where salary<=5000;
+select employee_id,first_name,salary from employees where salary<>5000;
+
+select employee_id,first_name,salary from employees where salary between 3000 and 6000;
+
+select employee_id,first_name,salary from employees where salary in (3000,5000,8000);
+
+select employee_id,first_name,salary from employees where first_name like 'S%';//first letter S
+
+select employee_id,first_name,salary from employees where first_name like '%u%';//last letter n
+
+
+select employee_id,first_name,salary from employees where first_name like '___';
+
+select employee_id,first_name,salary from employees where first_name like '_e_';
+
+select employee_id,first_name,salary from employees where first_name like '_e%';
+
+select employee_id,first_name,salary from employees where commission_pct is NULL;
+
+select employee_id,first_name,salary from employees where salary>=6000 and commission_pct is NULL;
+
+select employee_id,first_name,salary from employees where salary>=6000 or commission_pct is NULL;
+
+select employee_id,first_name,salary from employees where salary not between 3000 and 8000;
+
+select employee_id,first_name,salary from employees where salary not in (3000,5000,8000);
+
+select employee_id,first_name,salary,commission_pct from employees where commission_pct is NOT NULL;
+
+select employee_id,first_name,salary from employees where order by salary;
+
+select employee_id,first_name,salary from employees where salary not between 3000 and 8000;
+
+
+select employee_id,first_name,salary from employees where salary not between s and r;
+
+14-02-2022
+
+select employee_id, first_name,salary from employees order by salary,first_name desc;
+
+select employee_id,last_name,salary,job_id,department_id from employees order by department_id, desc;
+
+select employee_id, first_name,salary*12 "Annual Salary" from employees order by "Annual Salary";
+
+select sum(salary),avg(salary),min(salary),max(salary) from employees;
+
+select min(hire_date),max(hire_date) from employees;
+
+select count(department_id) from employees;
+
+select count(*) from employees;
+
+select count(commission_pct) from employees;
+
+select employee_id,first_name,salary from employees where department_id is NULL;
+
+select count(distinct department_id) from employees;
+
+select avg(commission_pct) from employees;
+
+select avg(NVL(commission_pct,0)) from employees;
+
+select count(*) from employees where department_id=80;
+//group by
+
+select department_id, max(salary) from employees group by department_id;
+
+select max(salary) from employees group by department_id;
+
+select department_id, count(*) from employees group by department_id;
+
+select department_id, count(*) from employees group by department_id order by department_id desc;
+
+select department_id, max(salary) from employees group by department_id order by department_id desc;
+
+select max(salary) from employees group by department_id order by max(salary);
+
+select department_id,job_id , sum(salary) from employees group by department_id , job_id order by department_id;
+
+
+select department_id,job_id , sum(salary) from employees group by department_id , job_id order by job_id;
+
+//error typos
+select department_id, sum(salary) from employees;
+
+select department_id, job_id , sum(salary) from employees group by department_id;
+
+select department_id , avg(salary) from employees where avg(salary)>7000 group by department_id;
+
+select department_id , avg(salary) from employees group by department_id;
+
+//having clause
+select department_id , avg(salary) from employees group by department_id having avg(salary) >7000;
+
+select department_id , avg(salary) from employees group by department_id order by avg(salary) having avg(salary) >7000;
+
+DDL
+//new product table schema
+
+create table product(
+id number(4) primary key,
+name varchar2(30) not null,
+brand varchar2(25),
+price number(12,2)
+);
+
+//inserting data
+insert into product (id,name,brand,price) values (3001, 'Refrigerator', 'LG', 35000.00);
+
+//insert null values
+
+insert into product (id,name,price) values (3001, 'AC', 35000.00);
+
+
+insert into product values(3003, 'AC','Whirpool', 35000.00);
+insert into product values(3004, 'Mobile','Samsung', 25000.00);
+
+insert into product (id,name,brand,price) values (&pid, '&pname', '&pbrand', &price);
+
+
+create table shop_product(
+id number(4) primary key,
+name varchar2(30) not null,
+brand varchar2(25),
+price number(12,2)
+);
+
+//to copy from table to another table using select 
+insert into shop_product(id,name,brand,price) select id,name,brand,price from product;
+
+insert into shop_product select * from product;
+
+create table my_product as select * from product;
+
+insert into my_product_1 select * from product;
+
+//false condition desc copy
+create table my_product_1 as select * from product where 1 = 2;
+
+ update product set brand='Sony', price = price + 2000.00 where id = 3004;
+ 
+ update product set brand='Sony', price = price + 2000.00 where brand is NULL; 
+ 
+ //to delete the rows from table:
+  delete my_product_1;
+
+ delete from my_product where price<30000.00;
+
+
+update product set price = price + 1000.00 where id = 3003;
+
+
+
+
+

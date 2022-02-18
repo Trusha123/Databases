@@ -1,0 +1,44 @@
+Do
+$$
+declare 
+	v_name varchar;
+	v_price int;
+begin
+	select name,price
+	into v_name,v_price
+	from product
+	where id = 3005;
+	raise notice 'Name: %',v_name;
+	raise notice 'Price: %',v_price;
+end;
+$$ Language plpgsql;
+
+
+create or replace procedure update_price(p_id int,p_price int)
+LANGUAGE plpgsql
+as $$
+begin
+	 
+	update product
+	SET price = price + p_price
+	where id=p_id;
+
+END;
+$$;
+
+
+call update_price(3005,3000); 
+
+create or replace function inc_price(p_price product.price%type)
+returns numeric 
+language plpgsql
+as
+$$
+begin
+	return p_price + 50.00;
+end;
+$$;
+
+select name,inc_price(price) from product;
+
+
